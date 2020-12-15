@@ -1,37 +1,34 @@
-## Welcome to GitHub Pages
+<!-- <div style="display: flex; flex-direction: row">
+<a href="https://davidl.me" style="margin-left:1rem; flex-grow: 1;">David Li</a>
+<a href="https://duruofei.com" style="margin-left:1rem; flex-grow: 1;">Ruofei Du</a>
+<a href="https://github.com/adharsh" style="margin-left:1rem; flex-grow: 1;">Adharsh Babu</a>
+<a href="https://kamibrumi.github.io/" style="margin-left:1rem; flex-grow: 1;">Camelia Brumar</a>
+<a href="http://www.cs.umd.edu/~varshney/" style="margin-left:1rem; flex-grow: 1;">Amitabh Varshney</a>
+</div> -->
 
-You can use the [editor on GitHub](https://github.com/AugmentariumLab/foveated-360-video/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Downloads
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<div style="display: flex; text-align:center; flex-direction: row;">
+<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/text-documents.png"><br><label>Paper (Coming Soon)</label></a><br></div>
+<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/text-documents.png"><br>Supplementary (Coming Soon)</a></div>
+<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/brackets-coding.png"><br>Code (Coming Soon)</a></div>
+</div>
 
-### Markdown
+## Video
+<iframe width="560" height="315" src="https://www.youtube.com/embed/llZAhfa-gCQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Abstract
+With the rapidly increasing resolutions of 360° cameras, head-mounted displays, and live-streaming services, streaming high-resolution panoramic videos over limited-bandwidth networks is becoming a critical challenge. Foveated video streaming can address this rising challenge in the context of eye-tracking-equipped virtual reality head-mounted displays. However, conventional log-polar foveated rendering suffers from a number of visual artifacts such as aliasing and flickering. In this paper, we introduce a new log-rectilinear transformation that incorporates summed-area table for filtering reduction and off-the-shelf video codecs to enable foveated streaming of 360° videos suitable for VR headsets with built-in eye-tracking. To validate our approach, we build a client-server system prototype for streaming 360° videos which leverages parallel algorithms over real-time video transcoding. We conduct quantitative experiments on an existing 360° video dataset and observe that the log-rectilinear transformation paired with summed-area table filtering heavily reduces flickering compared to log-polar subsampling while also yielding an additional 11% reduction in bandwidth usage.
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+## Citation
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AugmentariumLab/foveated-360-video/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+@inproceedings{li2021logrectilinear,
+    author	= {David Li and Ruofei Du and Adharsh Babu and Camelia D. Brumar and Amitabh Varshney},
+    title	= {A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming},
+    booktitle	= {Proc. of the IEEE Conference on Virtual Reality (VR)},
+    year	= {2021},
+    month       = {March},
+    address     = {Lisbon, Portugal}
+}
+```
