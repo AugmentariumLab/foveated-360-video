@@ -5,6 +5,8 @@
 <a href="https://kamibrumi.github.io/" style="margin-left:1rem; flex-grow: 1;">Camelia Brumar</a>
 <a href="http://www.cs.umd.edu/~varshney/" style="margin-left:1rem; flex-grow: 1;">Amitabh Varshney</a>
 </div> -->
+## Teaser
+<img src="resources/teaser.png"></img>
 
 ## Downloads
 
@@ -23,12 +25,14 @@ With the rapidly increasing resolutions of 360° cameras, head-mounted displays,
 
 ## Citation
 ```
-@inproceedings{li2021logrectilinear,
-    author	= {David Li and Ruofei Du and Adharsh Babu and Camelia D. Brumar and Amitabh Varshney},
-    title	= {A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming},
-    booktitle	= {Proc. of the IEEE Conference on Virtual Reality (VR)},
-    year	= {2021},
-    month       = {March},
-    address     = {Lisbon, Portugal}
+@ARTICLE{li2021logrectilinear,
+  author= {David Li and Ruofei Du and Adharsh Babu and Camelia D. Brumar and Amitabh Varshney},
+  journal={IEEE Transactions on Visualization and Computer Graphics},
+  title={A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming},
+  year={2021},
+  volume={},
+  number={},
+  pages={},
+  doi={}
 }
 ```
