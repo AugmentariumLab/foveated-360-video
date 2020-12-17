@@ -6,7 +6,7 @@
 <a href="http://www.cs.umd.edu/~varshney/" style="margin-left:1rem; flex-grow: 1;">Amitabh Varshney</a>
 </div> -->
 ## Teaser
-<img src="resources/teaser.png"></img>
+<img src="resources/teaser.png">
 
 ## Downloads
 
