@@ -270,9 +270,7 @@ void VideoServer::SendFrameLoop(websocketpp::connection_hdl hdl,
             << st->avg_frame_rate.den << std::endl;
   st->duration = 0;
 
-  std::cerr << "Before write header " << std::endl;
   ret = avformat_write_header(out_fmt_ctx, &encode_opts);
-  std::cerr << "After write header " << std::endl;
   if (ret < 0) {
     std::cerr << "Failed to write mp4 header" << std::endl;
     exit(EXIT_FAILURE);
@@ -381,16 +379,19 @@ void VideoServer::SendFrameLoop(websocketpp::connection_hdl hdl,
       conn_data->metadata_queue.pop();
     }
 
-    std::cerr << "Out packet size: " << out_packet.size << std::endl;
+    // std::cerr << "Out packet size: " << out_packet.size << std::endl;
 
-    out_packet.stream_index = 0;
-    ret = av_write_frame(out_fmt_ctx, &out_packet);
-    av_write_frame(out_fmt_ctx, nullptr);
-    if (ret < 0) {
-      av_make_error_string(err_buf, 256, ret);
-      std::cerr << "Muxxing failed " << err_buf << std::endl;
+    if (out_packet.size > 0) {
+      out_packet.stream_index = 0;
+      ret = av_write_frame(out_fmt_ctx, &out_packet);
+      av_write_frame(out_fmt_ctx, nullptr);
+      if (ret < 0) {
+        av_make_error_string(err_buf, 256, ret);
+        std::cerr << "Muxxing failed " << err_buf << std::endl;
+      }
+    } else {
+      std::cerr << "Out pack size is 0, ret:" << ret << std::endl;
     }
-    std::cout << "Out packet size: " << out_packet.size << std::endl;
 
     json to_return;
     to_return["type"] = "image";

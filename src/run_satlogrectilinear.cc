@@ -1,7 +1,6 @@
 #include <cpp-base64/base64.h>
 #include <zlib.h>
 
-#include <CL/cl.hpp>
 #include <Eigen/Core>
 #include <array>
 #include <chrono>

@@ -2,7 +2,6 @@
 #include <websocketpp/config/asio_no_tls_client.hpp>
 
 // clang-format off
-#include <CL/cl_gl.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
@@ -10,7 +9,6 @@
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_opengl_glext.h>
 #include <SDL2/SDL_thread.h>
-#include <CL/cl.hpp>
 #include <chrono>
 #include <filesystem>
 #include <iostream>
@@ -34,6 +32,7 @@ extern "C" {
 #include "save_frame.h"
 #include "video_decoder.h"
 #include "video_encoder.h"
+#include <CL/cl_gl.h>
 // clang-format on
 
 class VideoClient {

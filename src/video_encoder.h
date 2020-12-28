@@ -12,7 +12,12 @@ extern "C" {
 #include <libavutil/opt.h>
 #include <libavutil/pixdesc.h>
 #include <libswscale/swscale.h>
-#include "FFmpeg/libavcodec/nvenc.h"
+#include <libavutil/version.h>
+#if LIBAVCODEC_VERSION_MAJOR <= 57
+  #include "FFmpeg34/libavcodec/nvenc.h"
+#else
+  #include "FFmpeg42/libavcodec/nvenc.h"
+#endif
 }
 
 class VideoEncoder {

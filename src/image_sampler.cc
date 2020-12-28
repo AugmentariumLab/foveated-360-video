@@ -121,6 +121,48 @@ ImageSampler::ImageSampler(OpenCLManager *cl_manager) {
               << " Create interpolate logpolar kernel failed:" << ret
               << std::endl;
   }
+
+  std::ifstream sample_mipmap_logpolar_kernel_file(
+      "src/image_sampler_sample_mipmap_logpolar_kernel.cl");
+  std::string sample_mipmap_logpolar_kernel_contents(
+      (std::istreambuf_iterator<char>(sample_mipmap_logpolar_kernel_file)),
+      std::istreambuf_iterator<char>());
+  sample_mipmap_logpolar_program = cl::Program(
+      cl_manager->context, sample_mipmap_logpolar_kernel_contents, false, &ret);
+  if (ret != CL_SUCCESS) {
+    std::cerr << __FUNCTION__
+              << " Create sample_mipmap_logpolar_program failed: "
+              << cl_manager->GetCLErrorString(ret) << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
+  ret = sample_mipmap_logpolar_program.build();
+  if (ret != CL_SUCCESS) {
+    std::string build_log;
+    sample_mipmap_logpolar_program.getBuildInfo<std::string>(
+        cl_manager->device, CL_PROGRAM_BUILD_LOG, &build_log);
+    std::cerr << __FUNCTION__
+              << " Build sample_mipmap_logpolar_program failed: "
+              << cl_manager->GetCLErrorString(ret) << std::endl
+              << build_log << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
+
+  generate_image_pyramid_kernel = cl::Kernel(
+      sample_mipmap_logpolar_program, "generate_image_pyramid_kernel", &ret);
+  if (ret != CL_SUCCESS) {
+    std::cerr << __FUNCTION__
+              << " Create generate_image_pyramid_kernel failed: "
+              << cl_manager->GetCLErrorString(ret) << std::endl;
+  }
+
+  sample_logpolar_from_image_pyramid_kernel =
+      cl::Kernel(sample_mipmap_logpolar_program,
+                 "sample_logpolar_from_image_pyramid_kernel", &ret);
+  if (ret != CL_SUCCESS) {
+    std::cerr << __FUNCTION__
+              << " Create sample_logpolar_from_image_pyramid_kernel failed: "
+              << cl_manager->GetCLErrorString(ret) << std::endl;
+  }
 }
 
 ImageSampler::~ImageSampler() {}
@@ -810,6 +852,139 @@ void ImageSampler::ApplyLogPolarGaussianBlur(cl_mem cl_target_buffer,
               << ret << " " << OpenCLManager::GetCLErrorString(ret)
               << std::endl;
     exit(EXIT_FAILURE);
+  }
+  return;
+}
+
+void ImageSampler::GenerateImagePyramid(cl_mem cl_image_pyramid_sizes,
+                                        cl_mem cl_target_buffer,
+                                        int target_width, int target_height,
+                                        cl_mem cl_source_buffer,
+                                        int image_pyramid_layers) {
+  if (!use_opencl) {
+    std::cerr
+        << "[SATDecoder::GenerateImagePyramid] Not initialized with OpenCL"
+        << std::endl;
+    return;
+  }
+
+  cl_int ret = 0;
+  ret = clEnqueueCopyBuffer(cl_manager->command_queue(), cl_source_buffer,
+                            cl_target_buffer, 0, 0,
+                            target_width * target_height * 4, 0, NULL, NULL);
+  if (ret != CL_SUCCESS) {
+    std::cerr << "Failed to copy buffer" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  int current_width = target_width;
+  int current_height = target_height;
+  uint current_offset = 0;
+  std::vector<int32_t> image_pyramid_indices(4 * image_pyramid_layers);
+  image_pyramid_indices[0] = current_offset;
+  image_pyramid_indices[1] = current_width;
+  image_pyramid_indices[2] = current_height;
+
+  for (int i = 1; i < image_pyramid_layers; i++) {
+    // Set all the parameters and call the kernel
+    ret = generate_image_pyramid_kernel.setArg(0, sizeof(cl_mem),
+                                               &cl_target_buffer);
+    ret =
+        generate_image_pyramid_kernel.setArg(1, sizeof(uint), &current_offset);
+    ret = generate_image_pyramid_kernel.setArg(2, sizeof(int), &current_width);
+    ret = generate_image_pyramid_kernel.setArg(3, sizeof(int), &current_height);
+
+    cl::NDRange local_item_size(8, 8);
+    cl::NDRange global_item_size(
+        ROUND_UP_TO(current_width / 2, local_item_size[0]),
+        ROUND_UP_TO(current_height / 2, local_item_size[1]));
+    ret = cl_manager->command_queue.enqueueNDRangeKernel(
+        generate_image_pyramid_kernel, 0, global_item_size, local_item_size,
+        NULL, NULL);
+    if (ret != CL_SUCCESS) {
+      std::cerr << "[SATDecoder::GenerateImagePyramid] "
+                   "generate_image_pyramid_kernel "
+                   "launch failed:"
+                << ret << " " << OpenCLManager::GetCLErrorString(ret)
+                << std::endl;
+      exit(EXIT_FAILURE);
+    }
+
+    current_offset += current_height * current_width;
+    current_width = current_width / 2;
+    current_height = current_height / 2;
+    image_pyramid_indices[4 * i] = current_offset;
+    image_pyramid_indices[4 * i + 1] = current_width;
+    image_pyramid_indices[4 * i + 2] = current_height;
+  }
+
+  ret = clEnqueueWriteBuffer(cl_manager->command_queue(),
+                             cl_image_pyramid_sizes, CL_TRUE, 0,
+                             image_pyramid_indices.size() * sizeof(int32_t),
+                             image_pyramid_indices.data(), 0, NULL, NULL);
+  if (ret != CL_SUCCESS) {
+    std::cerr << "Failed to write image pyramid sizes" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  return;
+}
+
+void ImageSampler::SampleFrameLogPolarGPUFromImagePyramid(
+    cl_mem cl_target_buffer, int target_width, int target_height,
+    int target_linesize, cl_mem cl_image_pyramid, int source_width,
+    int source_height, cl_mem cl_image_pyramid_sizes, float center_x,
+    float center_y, int pyramid_levels) {
+  if (!use_opencl) {
+    std::cerr << "[ImageSampler::SampleFrameLogPolarGPUFromImagePyramid] Not "
+                 "initialized with OpenCL"
+              << std::endl;
+    return;
+  }
+
+  if (logpolar_grid_size <= 0) {
+    InitializeLogpolarGrid(target_width, target_height, source_width,
+                           source_height);
+  }
+
+  cl_int ret = 0;
+
+  // Set all the parameters and call the kernel
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(0, sizeof(cl_mem),
+                                                         &cl_target_buffer);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(1, sizeof(int),
+                                                         &target_width);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(2, sizeof(int),
+                                                         &target_height);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(3, sizeof(cl_mem),
+                                                         &cl_image_pyramid);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(4, sizeof(int),
+                                                         &source_width);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(5, sizeof(int),
+                                                         &source_height);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(
+      6, sizeof(cl_mem), &cl_image_pyramid_sizes);
+
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(7, sizeof(int),
+                                                         &pyramid_levels);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(8, sizeof(cl_mem),
+                                                         &logpolar_grid_buffer);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(9, sizeof(float),
+                                                         &center_x);
+  ret = sample_logpolar_from_image_pyramid_kernel.setArg(10, sizeof(float),
+                                                         &center_y);
+
+  cl::NDRange local_item_size(8, 8);
+  cl::NDRange global_item_size(ROUND_UP_TO(target_width, local_item_size[0]),
+                               ROUND_UP_TO(target_height, local_item_size[1]));
+  ret = cl_manager->command_queue.enqueueNDRangeKernel(
+      sample_logpolar_from_image_pyramid_kernel, 0, global_item_size,
+      local_item_size, NULL, NULL);
+  if (ret != CL_SUCCESS) {
+    std::cerr << "sample_logpolar_from_image_pyramid_kernel launch failed:"
+              << ret << " " << OpenCLManager::GetCLErrorString(ret)
+              << std::endl;
+    return;
   }
   return;
 }

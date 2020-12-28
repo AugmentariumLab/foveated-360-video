@@ -7,7 +7,6 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#include <CL/cl.hpp>
 #include <algorithm>
 #include <array>
 #include <cmath>

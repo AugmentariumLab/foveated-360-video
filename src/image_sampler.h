@@ -7,7 +7,6 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#include <CL/cl.hpp>
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -17,6 +16,9 @@ extern "C" {
 #include <string>
 
 #include "opencl_manager.h"
+
+// Rounds x up to the nearest y. E.g. ROUND_UP_TO(5, 8) == 8
+#define ROUND_UP_TO(x, y) (y * ((x + y - 1) / y))
 
 /**
  * The ImageSampler class samples directly from the RGB image.
@@ -36,6 +38,9 @@ class ImageSampler {
   cl::Program interpolate_program;
   cl::Kernel interpolate_logpolar_kernel;
   cl::Kernel logpolar_gaussian_blur_kernel;
+  cl::Program sample_mipmap_logpolar_program;
+  cl::Kernel generate_image_pyramid_kernel;
+  cl::Kernel sample_logpolar_from_image_pyramid_kernel;
   cl::Buffer grid_buffer;
   size_t grid_size = 0;
   cl::Buffer logpolar_grid_buffer;
@@ -82,6 +87,16 @@ class ImageSampler {
                                    int source_height, int source_linesize,
                                    float center_x, float center_y);
   void ApplyLogPolarGaussianBlur(cl_mem cl_target_buffer, int target_width,
-                                   int target_height, int target_linesize,
-                                   cl_mem cl_source_buffer);
+                                 int target_height, int target_linesize,
+                                 cl_mem cl_source_buffer);
+
+  void GenerateImagePyramid(cl_mem cl_image_pyramid_sizes,
+                            cl_mem cl_target_buffer, int target_width,
+                            int target_height, cl_mem cl_source_buffer,
+                                        int image_pyramid_layers);
+  void SampleFrameLogPolarGPUFromImagePyramid(
+      cl_mem cl_target_buffer, int target_width, int target_height,
+      int target_linesize, cl_mem cl_image_pyramid, int source_width,
+      int source_height, cl_mem cl_image_pyramid_sizes, float center_x,
+      float center_y, int pyramid_levels);
 };

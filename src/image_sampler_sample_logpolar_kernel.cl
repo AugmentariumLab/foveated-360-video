@@ -1,6 +1,6 @@
 
 #define _PI 3.14159265359
-#define _ALPHA 4.0
+#define _ALPHA 1.0
 
 __kernel void create_logpolar_grid_kernel(__global short *grid_buffer,
                                           int output_width, int output_height,
