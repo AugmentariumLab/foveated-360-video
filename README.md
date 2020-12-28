@@ -11,9 +11,11 @@
 * Boost
 * Eigen
 * zlib
+
 ```
+sudo apt install ocl-icd-opencl-dev opencl-headers opencl-c-headers opencl-clhpp-headers
 sudo apt install libavformat-dev libavcodec-dev libswscale-dev libavfilter-dev libavutil-dev libavresample-dev
-sudo apt install libsdl2-dev libglew-dev libglvnd-dev
+sudo apt install libsdl2-dev libglew-dev libglvnd-dev freeglut3-dev
 sudo apt install libboost-dev
 sudo apt install zlib1g-dev
 ```
