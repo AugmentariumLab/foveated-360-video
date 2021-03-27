@@ -1,12 +1,12 @@
 # Foveated 360 Video
 
 ## Requirements
-* Ubuntu 18.04 system with an NVIDIA GPU
+* Ubuntu 20.04 system with an NVIDIA GPU
 * OpenCL headers and NVIDIA drivers
 * C++ build tools including g++
 
 ### Libraries
-* FFmpeg 3.x libraries (libavformat-dev, libavcodec-dev, libswscale-dev, ...)
+* FFmpeg libraries (libavformat-dev, libavcodec-dev, libswscale-dev, ...)
 * SDL
 * Boost
 * Eigen
@@ -21,6 +21,9 @@ sudo apt install zlib1g-dev
 ```
 
 ## Getting started
+
+Download and extract the [1080p video dataset](https://drive.google.com/file/d/13C7-47pQBd_qcqtJ8FxUunOgboaFxpzH/view?usp=sharing).
+
 Install all prerequisites and run the following:
 * `make clean`
 * `make all`
