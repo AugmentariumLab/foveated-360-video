@@ -11,9 +11,9 @@
 ## Downloads
 
 <div style="display: flex; text-align:center; flex-direction: row;">
-<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/text-documents.png"><br><label>Paper (Coming Soon)</label></a><br></div>
-<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/text-documents.png"><br>Supplementary (Coming Soon)</a></div>
-<div style="margin:1rem; flex-grow: 1;"><a href="#"><img style="max-width:10rem;" src="resources/brackets-coding.png"><br>Code (Coming Soon)</a></div>
+<div style="margin:1rem; flex-grow: 1;"><a href="https://research.google/pubs/pub49851.pdf"><img style="max-width:10rem;" src="resources/text-documents.png"><br><label>Paper</label></a><br></div>
+<div style="margin:1rem; flex-grow: 1;"><a href="resources/VR2021_LogRectilinear_Supplementary.pdf"><img style="max-width:10rem;" src="resources/text-documents.png"><br>Supplementary</a></div>
+<div style="margin:1rem; flex-grow: 1;"><a href="https://github.com/AugmentariumLab/foveated-360-video"><img style="max-width:10rem;" src="resources/brackets-coding.png"><br>Code</a></div>
 </div>
 
 ## Video
@@ -32,7 +32,7 @@ With the rapidly increasing resolutions of 360° cameras, head-mounted displays,
   year={2021},
   volume={},
   number={},
-  pages={},
-  doi={}
+  pages={1-1},
+  doi={10.1109/TVCG.2021.3067762}
 }
 ```
