@@ -1,11 +1,15 @@
 theme: jekyll-theme-cayman
 title: A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming
-description: '<div style="display: flex; flex-direction: row; color: #FFF;">
+description: '<div style="display: flex; flex-direction: row; color: #FFF; flex-wrap: wrap;">
 <a href="https://davidl.me" style="margin-left:1rem; flex-grow: 1; color: #FFF;">David Li</a>
 <a href="https://duruofei.com" style="margin-left:1rem; flex-grow: 1; color: #FFF;">Ruofei Du</a>
 <a href="https://github.com/adharsh" style="margin-left:1rem; flex-grow: 1; color: #FFF;">Adharsh Babu</a>
 <a href="https://kamibrumi.github.io/" style="margin-left:1rem; flex-grow: 1; color: #FFF;">Camelia Brumar</a>
 <a href="http://www.cs.umd.edu/~varshney/" style="margin-left:1rem; flex-grow: 1; color: #FFF;">Amitabh Varshney</a>
-</div>'
+</div>
+<p style="margin-bottom: -3rem;">
+IEEE Transactions on Visualization and Computer Graphics (IEEE VR 2021)<br>
+TVCG - Honorable Mention
+</p>'
 github:
   is_project_page: false
