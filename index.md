@@ -26,13 +26,13 @@ With the rapidly increasing resolutions of 360° cameras, head-mounted displays,
 ## Citation
 ```
 @ARTICLE{li2021logrectilinear,
-  author= {David Li and Ruofei Du and Adharsh Babu and Camelia D. Brumar and Amitabh Varshney},
+  author={Li, David and Du, Ruofei and Babu, Adharsh and Brumar, Camelia D. and Varshney, Amitabh},
   journal={IEEE Transactions on Visualization and Computer Graphics},
   title={A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming},
   year={2021},
-  volume={},
-  number={},
-  pages={1-1},
+  volume={27},
+  number={5},
+  pages={2638-2647},
   doi={10.1109/TVCG.2021.3067762}
 }
 ```
