@@ -1,12 +1,11 @@
-<style type="text/css">
-.video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%}.video-container iframe,.video-container object,.video-container video,.video-container embed{position:absolute;top:0;left:0;width:100%;height:100%}
-</style>
 
-## Video
-
-<div class="video-container">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/AjSuUTvQnFg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 100%; position: relative; left: 50%; transform: translateX(-50%);"></iframe>
-</div>
+
+## Abstract
+
+[![Teaser image of A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming](resources/teaser.png)](https://duruofei.com/papers/Li_ALog-RectilinearTransformationForFoveated360-DegreeVideoStreaming_TVCG2021.pdf)
+
+With the rapidly increasing resolutions of 360° cameras, head-mounted displays, and live-streaming services, streaming high-resolution panoramic videos over limited-bandwidth networks is becoming a critical challenge. Foveated video streaming can address this rising challenge in the context of eye-tracking-equipped virtual reality head-mounted displays. However, conventional log-polar foveated rendering suffers from a number of visual artifacts such as aliasing and flickering. In this paper, we introduce a new log-rectilinear transformation that incorporates summed-area table filtering and off-the-shelf video codecs to enable foveated streaming of 360° videos suitable for VR headsets with built-in eye-tracking. To validate our approach, we build a client-server system prototype for streaming 360° videos which leverages parallel algorithms over real-time video transcoding. We conduct quantitative experiments on an existing 360° video dataset and observe that the log-rectilinear transformation paired with summed-area table filtering heavily reduces flickering compared to log-polar subsampling while also yielding an additional 11% reduction in bandwidth usage.
 
 ## Downloads
 
@@ -16,12 +15,6 @@
 <div style="margin:1rem; flex-grow: 1;"><a href="https://github.com/AugmentariumLab/foveated-360-video"><img style="max-width:10rem;" src="resources/github.jpg"><br>Code</a></div>
 <div style="margin:1rem; flex-grow: 1;"><a href="https://docs.google.com/presentation/d/15iIS2_9XapnSUtHnTNXNibJ7aeYD9ZYEnJqey0AlB88"><img style="max-width:10rem;" src="resources/slides.jpg"><br>Slides</a></div>
 </div>
-
-## Abstract
-
-[![Teaser image of A Log-Rectilinear Transformation for Foveated 360-degree Video Streaming](resources/teaser.png)](https://duruofei.com/papers/Li_ALog-RectilinearTransformationForFoveated360-DegreeVideoStreaming_TVCG2021.pdf)
-
-With the rapidly increasing resolutions of 360° cameras, head-mounted displays, and live-streaming services, streaming high-resolution panoramic videos over limited-bandwidth networks is becoming a critical challenge. Foveated video streaming can address this rising challenge in the context of eye-tracking-equipped virtual reality head-mounted displays. However, conventional log-polar foveated rendering suffers from a number of visual artifacts such as aliasing and flickering. In this paper, we introduce a new log-rectilinear transformation that incorporates summed-area table filtering and off-the-shelf video codecs to enable foveated streaming of 360° videos suitable for VR headsets with built-in eye-tracking. To validate our approach, we build a client-server system prototype for streaming 360° videos which leverages parallel algorithms over real-time video transcoding. We conduct quantitative experiments on an existing 360° video dataset and observe that the log-rectilinear transformation paired with summed-area table filtering heavily reduces flickering compared to log-polar subsampling while also yielding an additional 11% reduction in bandwidth usage.
 
 ## Citation
 
