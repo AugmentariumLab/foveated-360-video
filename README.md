@@ -55,7 +55,7 @@ Please refer to <https://augmentariumlab.github.io/foveated-360-video> for our p
 
 ## References
 
-If you use ARCore Depth Lab in your research, please reference it as:
+If you use this in your research, please reference it as:
 
     @article{Li2021LogRectilinear,
       author={Li, David and Du, Ruofei and Babu, Adharsh and Brumar, Camelia D. and Varshney, Amitabh},
